@@ -46,7 +46,7 @@ contract SolTweet {
         // notify followers
 
         //look up all the users follwers and let them know about the new tweet
-        following[]
+        // following[];
         emit NewTweet(id, _userId);
     }
 
@@ -59,22 +59,22 @@ contract SolTweet {
 
     function _follow(uint _userId, uint _userIdToFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
-        bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
+        // bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
         //check that the users isn't already following
-        require(following[_userId] != _userIdToFollow, "sender is already following");
+        // require(following[_userId] != _userIdToFollow, "sender is already following");
         
         //add the follower and increase follower count
-        following[_userId] = _userIdToFollow;
+        // following[_userId] = _userIdToFollow;
         users[_userId].followerCount.add(1);
     }
 
     function _unFollow(uint _userId, uint _userIdToUnFollow) public {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         //check that the users is already following
-        require(following[_userId] == _userIdToUnFollow, "sender is not following");
+        // require(following[_userId] == _userIdToUnFollow, "sender is not following");
         
         //remove the follower and decrease follower count
-        delete following[_userId];
+        // delete following[_userId];
         users[_userId].followerCount.sub(1);
     }
 }

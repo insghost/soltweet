@@ -3,4 +3,5 @@ var SolTweet = artifacts.require("SolTweet");
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
+  console.log(SolTweet, 'foo');
 };
