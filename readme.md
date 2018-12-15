@@ -7,10 +7,7 @@ SolTweet is a Twitter clone written in [Solidity](https://solidity.readthedocs.i
 
 ### IDE
 - We recommend using [VSCode](https://code.visualstudio.com/)
-- We use this VSCode extension for linting/development
-```
-Name: solidity Id: juanblanco.solidity Description: Ethereum Solidity Language for Visual Studio Code Version: 0.0.49 Publisher: Juan Blanco VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=juanblanco.solidity
-```
+- We use the [solidity](https://marketplace.visualstudio.com/items?itemName=juanblanco.solidity) VSCode extension for linting/development
 
 ### Tools
 - Install [truffle](https://truffleframework.com/docs/truffle/overview)
