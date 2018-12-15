@@ -11,9 +11,13 @@ SolTweet is a Twitter clone written in [Solidity](https://solidity.readthedocs.i
 
 ### Tools
 - Install [truffle](https://truffleframework.com/docs/truffle/overview)
+
 `npm install -g truffle`
+
 - [Install compiler version `0.5.0`](https://ethereum.stackexchange.com/a/26485)
+
 `cd /usr/local/lib/node_modules/truffle`
+
 `npm install solc@0.5.0`
 
 - Install [ganache](https://truffleframework.com/ganache)
@@ -35,4 +39,5 @@ module.exports = {
 
 ## Running/Compiling
 - Compile (run migration) see [running migrations](https://truffleframework.com/docs/truffle/getting-started/running-migrations)
-`truffle migrate`
+
+  `truffle migrate`
