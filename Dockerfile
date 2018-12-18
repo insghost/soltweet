@@ -5,10 +5,11 @@ RUN npm install -g truffle
 
 COPY . /
 
-RUN yarn cache clean &
-RUN yarn &
-RUN cd soltweet-frontend &
-RUN yarn cache clean &
+RUN yarn add react-scripts
+RUN yarn cache clean
+RUN yarn
+RUN cd soltweet-frontend
+RUN yarn cache clean
 RUN yarn
 RUN cd ..
 
