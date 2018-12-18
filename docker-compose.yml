@@ -5,8 +5,9 @@ services:
     image: trufflesuite/ganache-cli
     ports:
       - "8545:8545"
-    command: ["-h=0.0.0.0"]
-  soltweet-instance:
+  soltweet-build:
     depends_on: [dev-blockchain]
     build: .
-    tty: true
+    ports:
+      - "3000:3000"
+    command: yarn start-frontend
