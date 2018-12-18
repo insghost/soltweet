@@ -3,5 +3,6 @@ services:
 
 script:
   - docker-compose up -d
+  - docker-compose run soltweet-build truffle migrate
   - docker-compose run soltweet-build yarn test
   - docker-compose down
