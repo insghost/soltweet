@@ -37,7 +37,6 @@ describe('SolTweet', () => {
   })
 
   it('creates tweets', async () => {
-    assert(0 === 1)
     const instance = await SolTweet.deployed();
     await createUsers(instance, getFakeUsernames(2));
     let i = 0;
