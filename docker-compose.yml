@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  dev-blockchain:
+    image: trufflesuite/ganache-cli
+    ports:
+      - "8545:8545"
+    command: ["-h=0.0.0.0"]
+  soltweet-instance:
+    depends_on: [dev-blockchain]
+    build: .
+    tty: true
