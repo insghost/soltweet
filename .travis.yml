@@ -2,6 +2,6 @@ services:
   - docker
 
 script:
-  - docker-compose up &
-  - docker-compose run soltweet-build yarn test &
+  - docker-compose up
+  - docker-compose run soltweet-build yarn test
   - docker-compose down
