@@ -10,4 +10,4 @@ services:
     build: .
     ports:
       - "3000:3000"
-    command: yarn start-frontend
+    command: truffle migrate && yarn start-frontend
