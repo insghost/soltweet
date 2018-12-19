@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    steps:
+      - checkout
+      - run: docker-compose up -d
+      - run: docker-compose exec soltweet-build truffle test
+      - run: docker-compose down
