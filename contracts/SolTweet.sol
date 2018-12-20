@@ -14,12 +14,12 @@ contract SolTweet {
     mapping (uint => address) userToOwner;
     mapping (uint => uint) tweetToUserId;
     mapping (uint => bool) userHasLikedTweet;
-    //maps follower => user they follow
-    mapping (uint => bool) hasFollowed;
+    mapping (uint => mapping(uint => bool)) following;
+    mapping (uint => mapping(uint => bool)) followedBy;
 
     struct User {
         string username;
-        uint followerCount;
+        uint[] following;
     }
 
     struct Tweet {
@@ -34,7 +34,6 @@ contract SolTweet {
     function _createUser(string memory _username) public returns (uint) {
         User memory newUser;
         newUser.username = _username;
-        newUser.followerCount = 0;
         uint id = (users.push(newUser)).sub(1);
         userToOwner[id] = msg.sender;
         emit NewUser(id);
@@ -61,15 +60,21 @@ contract SolTweet {
         myTweet.likes = myTweet.likes.add(1);
     }
 
-    function _follow(uint _userId /*, uint _userIdToFollow */) public view {
+    function _follow(uint _userId, uint _userIdToFollow) public view {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
         // bool userHasFollowed = userHasLikedTweet[uint(keccak256(abi.encodePacked(_userId, _userIdToFollow)))];
         //check that the users isn't already following
-        // require(following[_userId] != _userIdToFollow, "sender is already following");
+    
+
+        require(following[_userId][_userIdToFollow] != true, "sender is already following");
         
         //add the follower and increase follower count
-        // following[_userId] = _userIdToFollow;
-        users[_userId].followerCount.add(1);
+        following[_userId][_userIdToFollow] = true;
+        users[_userId].following.push(_userIdToFollow);
+    }
+
+    function _getFollowers(uint _userId) public view {
+        // following[_userId]
     }
 
     function _unFollow(uint _userId/*, uint _userIdToUnFollow*/) public view {
@@ -79,6 +84,6 @@ contract SolTweet {
         
         //remove the follower and decrease follower count
         // delete following[_userId];
-        users[_userId].followerCount.sub(1);
+        // users[_userId].followerCount.sub(1);
     }
 }

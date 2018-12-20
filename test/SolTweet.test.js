@@ -15,9 +15,13 @@ const createUsers = async (instance, usernames) => {
     for(let username of usernames) {
       const tx = await instance._createUser(username);
       const currUser = (await instance.users.call(i));
-      let [currUsername, currFollowerCount] = currUser;
-      assert(currUsername === username, 'incorrect username');
-      assert(currFollowerCount.toNumber() === 0, 'incorrect number of followers');
+      console.log('currUser', currUser);
+      console.log('username', username);
+      console.log('typeof user', typeof currUser);
+      let [currUsername, following] = currUser;
+      console.log('following', following);
+      assert(currUser === username, 'incorrect username');
+      assert(following.length === 0, 'incorrect number of followers');
       i++;
     }
 }
@@ -63,6 +67,10 @@ describe('SolTweet', () => {
   })
 
   it('follows user', async () => {
+    const instance = await SolTweet.deployed();
+    await createUsers(instance, getFakeUsernames(2));
+    const [userAId, userBId] = [0, 1];
+    const followEvent = await instance._follow(userAId, userBId);
 // TODO
   })
 
