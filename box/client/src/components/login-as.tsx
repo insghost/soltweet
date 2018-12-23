@@ -35,6 +35,12 @@ class LoginAs extends React.Component<IProps> {
           `}
           onClick={this.loginAs}
         >Login</button>
+        <button
+          css={css`
+            margin-top: 0.375rem;
+          `}
+          onClick={this.loginAs}
+        >Create Account</button>
       </div>
     )
   }

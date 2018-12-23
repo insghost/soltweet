@@ -9,6 +9,7 @@ import { Tweet as TweetType } from './types/types'
 import SolTweet from "./contracts/SolTweet.json";
 import getWeb3 from "./utils/getWeb3";
 import LoginAs from './components/login-as';
+import CreateAccount from './components/create-account';
 jsx;
 /** @jsx jsx */
 
@@ -82,22 +83,39 @@ class App extends Component {
     }
   };
 
-  setup = async () => {
-    const { accounts, contract } = this.state
-
-    // const numberOfTweets = await contract.methods._getNumberOfTweets().call()
-    const numberOfTweets = 2
+  fetchTweets = async () => {
+    const { contract, accounts } = this.state
+    const numberOfTweets = await contract.methods._getNumberOfTweets().call()
+    // const numberOfTweets = 0
     const tweets: any = []
     for(let i = 0; i < numberOfTweets; i++) {
       const tweet = await contract.methods.tweets(i).call()
-      const { text } = tweet
+      const { text, authorId } = tweet
+      const author = await contract.methods.users(authorId).call()
+      const { username } = author
       tweets.push({
-        author: 'GhostRider',
+        author: username,
         tweetText: text
       })
     }
     this.setState({ tweets })
-    console.log(tweets);
+  }
+  setup = async () => {
+    const { accounts, contract } = this.state
+    this.fetchTweets()
+    const userHasAccount = await contract.methods.ownerHasAccount(accounts[0]).call()
+    const userId = await contract.methods.ownerToUser(accounts[0]).call()
+    if (userHasAccount && userId) {
+      try {
+        const user = await contract.methods.users(userId).call()
+        const { username } = user
+        this.setState({
+          userId, username
+        })
+      } catch (err) {
+        console.log('no user for address found')
+      }
+    }
     // console.log(res)
     // const user = await contract.methods.users(1).call()
     // console.log(user)
@@ -121,53 +139,73 @@ class App extends Component {
     author,
     tweetText
   } : HandleSubmitTweetArgs) => {
-    const { accounts, contract } = this.state
+    const { accounts, contract, username, userId } = this.state
 
-    const tweet = {
-      author,
-      tweetText
-    }
-    this.setState({
-      tweets: [tweet, ...this.state.tweets]
-    })
-    const res = await contract.methods._createTweet(0, tweetText).send({ from: accounts[0] })
-    console.log(res)
-    const tweetRes = await contract.methods.tweets(0).call()
-    console.log(tweetRes)
+    // const tweet = {
+    //   author: username,
+    //   tweetText
+    // }
+    // this.setState({
+    //   tweets: [tweet, ...this.state.tweets]
+    // })
+    const res = await contract.methods._createTweet(userId, tweetText).send({ from: accounts[0] })
+    this.updateTweets()
+    // const tweetRes = await contract.methods.tweets(0).call()
   }
 
-  loginAs = async (userId: string) => {
+  // loginAs = async (userId: string) => {
+  //   const { accounts, contract } = this.state
+
+  //   const user = await contract.methods.users(userId).call()
+  //   const { username } = user
+  //   this.setState({
+  //     username,
+  //     userId
+  //   })
+  // }
+
+  createAccount = async (username: string) => {
     const { accounts, contract } = this.state
 
-    const user = await contract.methods.users(userId).call()
-    const { username } = user
+    const userId = await contract.methods._createUser(username).send({ from: accounts[0] })
+    // const user = await contract.methods.users(userId).call()
+    // const { username } = user
     this.setState({
       username,
       userId
     })
   }
 
+  updateTweets = () => {
+    this.fetchTweets()
+  }
+
   render() {
-    const { username } = this.state
+    const { userId, username } = this.state
     return (
       <Container>
         <div>
           <H1>SolTweet</H1>
-          <h2
-            css={css`
-              color: red;
-            `}
-          >
-            {username ? <span>Logged in as {username}</span> : <span>You are not logged in</span>}
-          </h2>
-          <LoginAs loginAs={this.loginAs} />
+          {userId ? (
+            <span>Logged in as {username}</span>
+          ) : (
+            <>
+              <span>This wallet does not have a user account. Create one to tweet.</span>
+              <CreateAccount createAccount={this.createAccount} />
+            </>
+          )}
         </div>
         <div>
+          <button
+            onClick={this.updateTweets}
+          >
+            Refresh tweets
+          </button>
           {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}
         </div>
-        <WriteTweet
+        {userId && <WriteTweet
           handleSubmitTweet={this.handleSubmitTweet}
-        />
+        />}
       </Container>
     );
   }

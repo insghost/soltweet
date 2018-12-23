@@ -12,6 +12,8 @@ contract SolTweet {
     event NewTweet(uint tweetId, uint indexed userId);
 
     mapping (uint => address) userToOwner;
+    mapping (address => uint) public ownerToUser;
+    mapping (address => bool) public ownerHasAccount;
     mapping (uint => uint) tweetToUserId;
     mapping (uint => bool) userHasLikedTweet;
     mapping (uint => mapping (uint => bool)) public followingMapping;
@@ -25,6 +27,7 @@ contract SolTweet {
     struct Tweet {
         string text;
         uint likes;
+        uint authorId;
     }
 
     User[] public users;
@@ -44,13 +47,15 @@ contract SolTweet {
         newUser.followerCount = 0;
         uint id = (users.push(newUser)).sub(1);
         userToOwner[id] = msg.sender;
+        ownerToUser[msg.sender] = id;
+        ownerHasAccount[msg.sender] = true;
         emit NewUser(id);
         return id;
     }
 
     function _createTweet(uint _userId, string memory _tweetText) public returns (uint) {
         require(userToOwner[_userId] == msg.sender, "unauthorized sender");
-        uint id = (tweets.push(Tweet(_tweetText, 0))).sub(1);
+        uint id = (tweets.push(Tweet(_tweetText, 0, _userId))).sub(1);
         tweetToUserId[id] = _userId;
         // notify followers
 

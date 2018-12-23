@@ -28,6 +28,7 @@ class WriteTweet extends React.Component<IProps> {
           flex-direction: column;
         `}
       >
+        <h3>Write a tweet</h3>
         <textarea
           onChange={this.setTweetText}
           value={this.state.tweetText}
