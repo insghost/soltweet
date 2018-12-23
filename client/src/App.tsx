@@ -10,6 +10,7 @@ import SolTweet from "./contracts/SolTweet.json";
 import getWeb3 from "./utils/getWeb3";
 import LoginAs from './components/login-as';
 import CreateAccount from './components/create-account';
+import { space2X, space1X } from './css-variables';
 jsx;
 /** @jsx jsx */
 
@@ -136,7 +137,6 @@ class App extends Component {
   // };
 
   handleSubmitTweet = async ({
-    author,
     tweetText
   } : HandleSubmitTweetArgs) => {
     const { accounts, contract, username, userId } = this.state
@@ -195,13 +195,42 @@ class App extends Component {
             </>
           )}
         </div>
-        <div>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+            margin-bottom: ${space2X};
+          `}
+        >
+          <div
+            css={css`
+              margin-top: ${space2X};
+              margin-bottom: ${space1X};
+            `}
+          >
+            {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}
+          </div>
           <button
             onClick={this.updateTweets}
+            css={css`
+              margin-top: 0.75rem;
+              background: #6baaf0;
+              border: none;
+              border-radius: 100px;
+              font-size: 1.5rem;
+              color: white;
+              padding: 0.75rem 0;
+              min-width: 120px;
+              margin-left: auto;
+              margin-right: auto;
+
+              &:hover {
+                background: #3771b3;
+              }
+            `}
           >
-            Refresh tweets
+            Refresh
           </button>
-          {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}
         </div>
         {userId && <WriteTweet
           handleSubmitTweet={this.handleSubmitTweet}
