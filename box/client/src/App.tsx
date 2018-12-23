@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import './App.css';
 import Container from './components/container'
 import styled from '@emotion/styled'
-import { jsx } from '@emotion/core'
+import { jsx, css } from '@emotion/core'
 import Tweet from './components/tweet';
 import WriteTweet from './components/write-tweet';
 import { Tweet as TweetType } from './types/types'
 import SolTweet from "./contracts/SolTweet.json";
 import getWeb3 from "./utils/getWeb3";
+jsx;
+/** @jsx jsx */
 
 const H1 = styled.h1`
   text-align: center;
@@ -23,23 +25,25 @@ interface IState {
   web3: any
   accounts: any
   contract: any
+  username?: string
 }
 
 class App extends Component {
   state : IState = {
     tweets: [
-      {
-        author: 'fake-author-1',
-        tweetText: 'fake-text-1'
-      },
-      {
-        author: 'fake-author-2',
-        tweetText: 'fake-text-2'
-      }
+      // {
+      //   author: 'fake-author-1',
+      //   tweetText: 'fake-text-1'
+      // },
+      // {
+      //   author: 'fake-author-2',
+      //   tweetText: 'fake-text-2'
+      // }
     ],
     web3: null,
     accounts: null,
-    contract: null
+    contract: null,
+    username: 'GhostRider'
   }
 
   componentDidMount = async () => {
@@ -78,8 +82,21 @@ class App extends Component {
   };
 
   setup = async () => {
-    // const { accounts, contract } = this.state
-    // const res = await contract.methods._createUser('GhostRider').send({ from: accounts[0] })
+    const { accounts, contract } = this.state
+
+    // const numberOfTweets = await contract.methods._getNumberOfTweets().call()
+    const numberOfTweets = 2
+    const tweets: any = []
+    for(let i = 0; i < numberOfTweets; i++) {
+      const tweet = await contract.methods.tweets(i).call()
+      const { text } = tweet
+      tweets.push({
+        author: 'GhostRider',
+        tweetText: text
+      })
+    }
+    this.setState({ tweets })
+    console.log(tweets);
     // console.log(res)
     // const user = await contract.methods.users(1).call()
     // console.log(user)
@@ -99,10 +116,12 @@ class App extends Component {
   //   // this.setState({ tweets: response });
   // };
 
-  handleSubmitTweet = ({
+  handleSubmitTweet = async ({
     author,
     tweetText
   } : HandleSubmitTweetArgs) => {
+    const { accounts, contract } = this.state
+
     const tweet = {
       author,
       tweetText
@@ -110,13 +129,25 @@ class App extends Component {
     this.setState({
       tweets: [tweet, ...this.state.tweets]
     })
+    const res = await contract.methods._createTweet(0, tweetText).send({ from: accounts[0] })
+    console.log(res)
+    const tweetRes = await contract.methods.tweets(0).call()
+    console.log(tweetRes)
   }
 
   render() {
+    const { username } = this.state
     return (
       <Container>
         <div>
           <H1>SolTweet</H1>
+          <h2
+            css={css`
+              color: red;
+            `}
+          >
+            Logged in as {username}
+          </h2>
         </div>
         <div>
           {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}

@@ -34,6 +34,10 @@ contract SolTweet {
         return followingMappingKeys[_userId];
     }
 
+    function _getNumberOfTweets() public view returns (uint) {
+        return tweets.length;
+    }
+
     function _createUser(string memory _username) public returns (uint) {
         User memory newUser;
         newUser.username = _username;
