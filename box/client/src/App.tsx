@@ -8,6 +8,7 @@ import WriteTweet from './components/write-tweet';
 import { Tweet as TweetType } from './types/types'
 import SolTweet from "./contracts/SolTweet.json";
 import getWeb3 from "./utils/getWeb3";
+import LoginAs from './components/login-as';
 jsx;
 /** @jsx jsx */
 
@@ -25,7 +26,8 @@ interface IState {
   web3: any
   accounts: any
   contract: any
-  username?: string
+  username?: string,
+  userId?: number
 }
 
 class App extends Component {
@@ -42,8 +44,7 @@ class App extends Component {
     ],
     web3: null,
     accounts: null,
-    contract: null,
-    username: 'GhostRider'
+    contract: null
   }
 
   componentDidMount = async () => {
@@ -135,6 +136,17 @@ class App extends Component {
     console.log(tweetRes)
   }
 
+  loginAs = async (userId: string) => {
+    const { accounts, contract } = this.state
+
+    const user = await contract.methods.users(userId).call()
+    const { username } = user
+    this.setState({
+      username,
+      userId
+    })
+  }
+
   render() {
     const { username } = this.state
     return (
@@ -146,8 +158,9 @@ class App extends Component {
               color: red;
             `}
           >
-            Logged in as {username}
+            {username ? <span>Logged in as {username}</span> : <span>You are not logged in</span>}
           </h2>
+          <LoginAs loginAs={this.loginAs} />
         </div>
         <div>
           {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}
