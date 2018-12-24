@@ -117,7 +117,7 @@ class App extends Component {
     }, async (err: Error, res?: any) => {
       // console.log(err, res)
       const { tweetId } = res.returnValues
-      this.setState({ tweets: [await this.fetchTweet(tweetId), ...this.state.tweets] })
+      this.setState({ tweets: [...this.state.tweets, await this.fetchTweet(tweetId)] })
     })
     const userHasAccount = await contract.methods.ownerHasAccount(accounts[0]).call()
     const userId = await contract.methods.ownerToUser(accounts[0]).call()
@@ -220,6 +220,8 @@ class App extends Component {
             css={css`
               margin-top: ${space2X};
               margin-bottom: ${space1X};
+              display: flex;
+              flex-direction: column-reverse;
             `}
           >
             {this.state.tweets.map((tweet, idx) => <Tweet {...tweet} key={idx} />)}
