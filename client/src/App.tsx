@@ -89,17 +89,20 @@ class App extends Component {
     const numberOfTweets = await contract.methods._getNumberOfTweets().call()
     const tweets: any = []
     for(let i = 0; i < numberOfTweets; i++) {
-      const tweet = await contract.methods.tweets(i).call()
-      const { text, authorId, likes } = tweet
-      const author = await contract.methods.users(authorId).call()
-      const { username } = author
-      tweets.push({
-        author: username,
-        text,
-        likeCount: likes,
-        id: i
-      })
+      // const tweet = await contract.methods.tweets(i).call()
+      // const { text, authorId, likes } = tweet
+      // const author = await contract.methods.users(authorId).call()
+      // const { username } = author
+      // tweets.push({
+      //   author: username,
+      //   text,
+      //   likeCount: likes,
+      //   id: i
+      // })
       // web3.eth.subscribe('LikeCountChange', i)
+      
+      // TODO switch to this line
+      // tweets.push(await this.fetchTweet(i))
     }
     this.setState({ tweets })
   }
