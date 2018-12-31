@@ -176,6 +176,7 @@ class App extends Component {
             css={css`
               text-align: center;
               color: ${colors.white};
+              font-weight: 900;
             `}
           >
             SolTweet
@@ -195,6 +196,12 @@ class App extends Component {
                 css={css`
                   color: ${colors.lightGrey};
                   flex-grow: 1;
+                  font-size: 1.25rem;
+                  font-weight: 700;
+
+                  @media (max-width: ${mq.aboveTablet}) {
+                    font-size: 1rem;
+                  }
                 `}
               >
                 Logged in as

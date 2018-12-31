@@ -2,6 +2,7 @@ import React, { SFC, ChangeEvent } from 'react'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 import Button from './button'
+import { space2X, space1X } from '../css-variables';
 // WTF emotion?!
 jsx
 
@@ -33,9 +34,10 @@ class WriteTweet extends React.Component<IProps> {
         <textarea
           css={css`
             border: none;
-            resize: vertical;
-            min-height: 2.5rem;
             border-bottom: solid 1px;
+            margin-top: ${space1X};
+            min-height: 2.5rem;
+            resize: vertical;
           `}
           onChange={this.setTweetText}
           value={this.state.tweetText}
