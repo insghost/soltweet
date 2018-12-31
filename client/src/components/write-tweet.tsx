@@ -1,7 +1,7 @@
 import React, { SFC, ChangeEvent } from 'react'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
-import Button from './button';
+import Button from './button'
 // WTF emotion?!
 jsx
 
@@ -40,11 +40,7 @@ class WriteTweet extends React.Component<IProps> {
           onChange={this.setTweetText}
           value={this.state.tweetText}
         />
-        <Button
-          onClick={this.submitTweet}
-        >
-          Submit
-        </Button>
+        <Button onClick={this.submitTweet}>Submit</Button>
       </div>
     )
   }
