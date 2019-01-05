@@ -1,0 +1,13 @@
+{
+  "main.css": "/soltweet/static/css/main.9664b19d.chunk.css",
+  "main.js": "/soltweet/static/js/main.e2a0863b.chunk.js",
+  "main.js.map": "/soltweet/static/js/main.e2a0863b.chunk.js.map",
+  "static/js/1.71e769d1.chunk.js": "/soltweet/static/js/1.71e769d1.chunk.js",
+  "static/js/1.71e769d1.chunk.js.map": "/soltweet/static/js/1.71e769d1.chunk.js.map",
+  "runtime~main.js": "/soltweet/static/js/runtime~main.4123c5df.js",
+  "runtime~main.js.map": "/soltweet/static/js/runtime~main.4123c5df.js.map",
+  "static/css/main.9664b19d.chunk.css.map": "/soltweet/static/css/main.9664b19d.chunk.css.map",
+  "index.html": "/soltweet/index.html",
+  "precache-manifest.ee72cca3c1a2e11e2f6c6a1d968ce561.js": "/soltweet/precache-manifest.ee72cca3c1a2e11e2f6c6a1d968ce561.js",
+  "service-worker.js": "/soltweet/service-worker.js"
+}
