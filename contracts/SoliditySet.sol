@@ -11,8 +11,8 @@ contract SoliditySet {
 
     //TODO map to byte array cuz it's and awesome idea
     mapping (uint => SuperIndex) public elements;
-    uint[] public elementsKeys;
-    uint length;
+    uint length;    
+    uint firstExistingElementIndex;
     uint lastExistingElementIndex;
    
     function contains(uint element) public view returns (bool) {
@@ -34,7 +34,6 @@ contract SoliditySet {
         //TODO check that we don't need to a NPE check
         require(!elements[element].exists, "element already exists in set");
         SuperIndex memory newIndex;
-        newIndex.index = elementsKeys.push(element); 
         newIndex.prevIndex = lastExistingElementIndex;
         if (size() > 0) {
             SuperIndex memory prevIndex = elements[lastExistingElementIndex];
@@ -51,7 +50,6 @@ contract SoliditySet {
          //check that it exists in the set
         require(elements[element].exists, "element does not exist in set");
         SuperIndex memory removeNode = elements[element];
-        elementsKeys[removeNode.index] = 0; 
         removeNode.exists = false;
         elements[element] = removeNode;
 
@@ -77,11 +75,13 @@ contract SoliditySet {
         
     }
 
-    function getFromOffset(uint offset, uint total, uint limit) public view {
-        //TODO should we but in a hard limit size
-        //can we limit to max gas amount?
-        for (uint i = offset; i < total + offset; i++) {
-            elementKeys
+    function getFromOffset(uint offset, uint limit) public view {
+        //TODO should we put in a hard limit size
+        //can we limit to max gas amount?]
+        uint[] results;
+        uint currentNodeIndex;
+        while (results.length < total + offset) {
+            results.push(elements[i]);
         }
     }
 
