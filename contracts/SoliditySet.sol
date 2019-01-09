@@ -7,6 +7,7 @@ contract SoliditySet {
         uint nextIndex;
         uint index;
         bool exists;
+        uint data;
     }
 
     //TODO map to byte array cuz it's and awesome idea
@@ -38,6 +39,9 @@ contract SoliditySet {
         if (size() > 0) {
             Node memory prevIndex = elements[lastExistingElementIndex];
             prevIndex.nextIndex = newNode.index;
+        }
+        if (size() == 0) {
+            firstExistingElementIndex = newNode.index;
         }
         lastExistingElementIndex = newNode.index;
         newNode.exists = true;
@@ -75,14 +79,21 @@ contract SoliditySet {
         
     }
 
-    function getFromOffset(uint offset, uint limit) public view {
+    function getFromOffset(uint startingIndex, uint limit) public view returns (uint[] memory) {
         //TODO should we put in a hard limit size
         //can we limit to max gas amount?]
-        uint[] results;
-        uint currentNodeIndex;
-        while (results.length < total + offset) {
-            results.push(elements[i]);
+        uint[] memory results = new uint[](limit);
+        uint total = 0;
+        uint currentNodeIndex = startingIndex;
+        while (results.length < limit) {
+            results[total] = elements[currentNodeIndex].data;
+            if (currentNodeIndex == elements[currentNodeIndex].nextIndex) {
+                break;
+            }
+            currentNodeIndex = elements[currentNodeIndex].nextIndex;
+            total++;
         }
+        return results;
     }
 
 
